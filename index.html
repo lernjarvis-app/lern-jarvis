@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Lern-Jarvis</title>
+  <link rel="stylesheet" href="src/style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        LERN&#8209;JARVIS
+      </div>
+      <div class="status-readout">
+        <span class="status-item">LEVEL <strong id="header-level">&mdash;</strong></span>
+        <span class="status-item">XP <strong id="header-xp">&mdash;</strong></span>
+        <span class="status-item">&#9733; <strong id="header-sterne">&mdash;</strong></span>
+      </div>
+    </header>
+
+    <p class="data-warning" id="data-warning" role="status" aria-live="polite" hidden></p>
+
+    <main class="view-container">
+      <section class="view dashboard jarvis-hub" id="view-dashboard">
+        <p class="hub-system-text" aria-hidden="true">&#10022; SYSTEM ONLINE</p>
+
+        <div class="hub" id="hub">
+          <svg class="hub-svg" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+            <defs>
+              <radialGradient id="core-depth" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#17293d" />
+                <stop offset="100%" stop-color="#050910" />
+              </radialGradient>
+            </defs>
+
+            <!-- Status-Leitungen: immer sichtbar -->
+            <g class="status-leitungen">
+              <path class="leitung leitung-status" d="M 50 33 L 50 24 L 50 16" />
+              <path class="leitung leitung-status" d="M 37 39 L 28 34 L 22.2 30.5" />
+              <path class="leitung leitung-status" d="M 63 39 L 72 34 L 77.8 30.5" />
+              <circle class="leitung-node" cx="50" cy="16" r="1" />
+              <circle class="leitung-node" cx="22.2" cy="30.5" r="1" />
+              <circle class="leitung-node" cx="77.8" cy="30.5" r="1" />
+            </g>
+
+            <!-- Menü-Leitungen: wachsen beim Öffnen -->
+            <g class="menu-leitungen">
+              <path class="leitung leitung-menu" data-index="0" d="M 50 67 L 50 77 L 50 86" />
+              <path class="leitung leitung-menu" data-index="1" d="M 66.7 52.96 L 75.68 58.34 L 85.5 56.25" />
+              <path class="leitung leitung-menu" data-index="2" d="M 60.9 63 L 64.31 72.9 L 73.1 77.6" />
+              <path class="leitung leitung-menu" data-index="3" d="M 39.1 63 L 35.69 72.9 L 26.9 77.6" />
+              <path class="leitung leitung-menu" data-index="4" d="M 33.3 52.96 L 24.32 58.34 L 14.5 56.25" />
+              <rect class="leitung-marker" data-index="0" x="48.6" y="85.2" width="2.8" height="1.6" />
+              <rect class="leitung-marker" data-index="1" x="84.1" y="55.45" width="2.8" height="1.6" transform="rotate(10 85.5 56.25)" />
+              <rect class="leitung-marker" data-index="2" x="71.7" y="76.8" width="2.8" height="1.6" transform="rotate(50 73.1 77.6)" />
+              <rect class="leitung-marker" data-index="3" x="25.5" y="76.8" width="2.8" height="1.6" transform="rotate(-50 26.9 77.6)" />
+              <rect class="leitung-marker" data-index="4" x="13.1" y="55.45" width="2.8" height="1.6" transform="rotate(-10 14.5 56.25)" />
+            </g>
+
+            <!-- Jarvis-Kern -->
+            <g class="jarvis-core-art">
+              <circle class="core-ring core-ring-ticks" cx="50" cy="50" r="16" />
+              <circle class="core-ring core-ring-segmented" cx="50" cy="50" r="14" />
+              <circle class="core-ring core-ring-bright" cx="50" cy="50" r="11" />
+              <circle class="core-fill" cx="50" cy="50" r="9" fill="url(#core-depth)" />
+              <circle class="core-dot" cx="50" cy="50" r="2.1" />
+            </g>
+          </svg>
+
+          <button
+            type="button"
+            class="jarvis-core-button"
+            id="jarvis-core-button"
+            aria-expanded="false"
+            aria-label="Jarvis-Men&uuml; &ouml;ffnen"
+          ></button>
+
+          <div class="hud-stat hud-stat-level" style="left: 22.2%; top: 30.5%">
+            <span class="hud-stat-label">LEVEL</span>
+            <strong class="hud-stat-value" id="hud-level">1</strong>
+            <span class="hud-stat-sub" id="hud-level-name">Lernentdecker</span>
+          </div>
+
+          <div class="hud-stat hud-stat-xp" style="left: 50%; top: 16%">
+            <span class="hud-stat-label">XP</span>
+            <strong class="hud-stat-value" id="hud-xp">0</strong>
+            <div class="hud-bar"><div class="hud-bar-fill" id="hud-xp-bar" style="width: 0%"></div></div>
+            <span class="hud-stat-sub" id="hud-xp-sub">0 / 100 bis Level 2</span>
+          </div>
+
+          <div class="hud-stat hud-stat-sterne" style="left: 77.8%; top: 30.5%">
+            <span class="hud-stat-label">&#9733; STERNE</span>
+            <strong class="hud-stat-value" id="hud-sterne">0</strong>
+          </div>
+
+          <nav class="hub-menu" id="hub-menu">
+            <button class="hub-menu-item" data-nav="view-faecher" style="left: 50%; top: 86%" tabindex="-1">
+              <span class="hub-menu-icon">&#9684;</span>
+              <span class="hub-menu-label">Lernbereich</span>
+            </button>
+            <button class="hub-menu-item" data-area="belohnungen" style="left: 85.5%; top: 56.25%" tabindex="-1">
+              <span class="hub-menu-icon">&#9733;</span>
+              <span class="hub-menu-label">Sterne &amp; Belohnungen</span>
+            </button>
+            <button class="hub-menu-item" data-area="antolin" style="left: 73.1%; top: 77.6%" tabindex="-1">
+              <span class="hub-menu-icon">&#128214;</span>
+              <span class="hub-menu-label">Antolin &amp; ANTON</span>
+            </button>
+            <button class="hub-menu-item" data-area="gewohnheiten" style="left: 26.9%; top: 77.6%" tabindex="-1">
+              <span class="hub-menu-icon">&#10022;</span>
+              <span class="hub-menu-label">Gewohnheiten</span>
+            </button>
+            <button class="hub-menu-item" data-area="eltern" style="left: 14.5%; top: 56.25%" tabindex="-1">
+              <span class="hub-menu-icon">&#9881;</span>
+              <span class="hub-menu-label">Elternbereich</span>
+            </button>
+          </nav>
+        </div>
+
+        <button type="button" class="hub-hint" id="hub-hint">Tippe auf Jarvis</button>
+      </section>
+
+      <section class="view subview" id="view-faecher" hidden>
+        <button class="back-button" type="button" data-back="view-dashboard">&larr; Zur&uuml;ck</button>
+        <h2 class="view-title">F&auml;cher</h2>
+        <nav class="area-grid">
+          <button class="area-card" data-area="mathe">
+            <span class="area-icon">&#8721;</span>
+            <span class="area-label">Mathematik</span>
+            <span class="area-sub">folgt sp&auml;ter</span>
+          </button>
+          <button class="area-card" data-nav="view-deutsch-themen">
+            <span class="area-icon">&#9999;</span>
+            <span class="area-label">Deutsch</span>
+            <span class="area-sub">Themen ansehen</span>
+          </button>
+        </nav>
+      </section>
+
+      <section class="view subview" id="view-deutsch-themen" hidden>
+        <button class="back-button" type="button" data-back="view-faecher">&larr; Zur&uuml;ck</button>
+        <h2 class="view-title">Deutsch &ndash; Themen</h2>
+        <nav class="area-grid">
+          <button class="area-card" data-area="rechtschreibung">
+            <span class="area-label">Rechtschreibung</span>
+            <span class="area-sub">folgt sp&auml;ter</span>
+          </button>
+          <button class="area-card" data-nav="view-deutsch-grossklein">
+            <span class="area-label">Gro&szlig;- &amp; Kleinschreibung</span>
+            <span class="area-sub">Demo verf&uuml;gbar</span>
+          </button>
+          <button class="area-card" data-area="wortarten">
+            <span class="area-label">Wortarten</span>
+            <span class="area-sub">folgt sp&auml;ter</span>
+          </button>
+          <button class="area-card" data-area="satzbau">
+            <span class="area-label">Satzbau &amp; Satzzeichen</span>
+            <span class="area-sub">folgt sp&auml;ter</span>
+          </button>
+          <button class="area-card" data-area="lesen">
+            <span class="area-label">Leseverst&auml;ndnis</span>
+            <span class="area-sub">folgt sp&auml;ter</span>
+          </button>
+          <button class="area-card" data-area="schreiben">
+            <span class="area-label">Texte schreiben</span>
+            <span class="area-sub">folgt sp&auml;ter</span>
+          </button>
+        </nav>
+      </section>
+
+      <section class="view subview exercise-view" id="view-deutsch-grossklein" hidden>
+        <button class="back-button" type="button" data-back="view-deutsch-themen">&larr; Zur&uuml;ck</button>
+        <div class="exercise-header">
+          <h2 class="view-title">Gro&szlig;- &amp; Kleinschreibung</h2>
+          <span class="demo-badge">DEMO &ndash; ohne KI</span>
+        </div>
+        <div class="exercise-content" id="exercise-content"></div>
+      </section>
+    </main>
+
+    <p class="notice" id="notice" role="status" aria-live="polite"></p>
+  </div>
+
+  <script src="src/fortschritt.js"></script>
+  <script src="src/script.js"></script>
+</body>
+</html>
