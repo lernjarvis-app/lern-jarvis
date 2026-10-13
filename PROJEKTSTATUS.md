@@ -17,9 +17,26 @@ kostenpflichtige Dienste, mit lokaler Speicherung statt eigenem Server.
 ## Aktueller funktionierender Stand (geprüft durch Code-Lektüre und eigene Tests)
 
 Reine HTML/CSS/JavaScript-Anwendung ohne Build-Werkzeuge und ohne Abhängigkeiten
-(5 Dateien: `index.html`, `src/script.js`, `src/style.css`, `src/fortschritt.js`,
-`PROJEKTSTATUS.md`). Enthält:
+(`index.html`, `src/script.js`, `src/style.css`, `src/fortschritt.js`,
+`PROJEKTSTATUS.md`, sowie **neu:** `manifest.webmanifest`, `sw.js` und drei
+Icon-Dateien unter `icons/`). Enthält:
 
+- **Neu:** Die App ist installierbar (Web-App-Manifest: Name „Lern-Jarvis",
+  Kurzname „Jarvis", Start im Vollbild `fullscreen` und Querformat
+  `landscape`, dunkle Hintergrund-/Theme-Farbe passend zum Design). Drei
+  eigene App-Symbole (192×192, 512×512, plus eine „maskable"-Variante für
+  Android) zeigen einen schlichten Jarvis-Kern in Cyan auf dunklem Grund –
+  erzeugt als reine PNG-Dateien ganz ohne Installation, nur mit der
+  Python-Standardbibliothek (`zlib`, `struct`), keine fremden Bilder.
+- **Neu:** Ein Service Worker (`sw.js`) speichert alle App-Dateien beim
+  ersten Laden zwischen (Cache-Name `lernjarvis-v1`), sodass die App danach
+  auch ohne Internetverbindung vollständig lädt. Bei einer neuen
+  Cache-Version werden alte Caches automatisch gelöscht; dank
+  `skipWaiting()`/`clients.claim()` übernimmt der Browser eine neue Version
+  spätestens beim nächsten Öffnen der App, ohne dass dafür etwas manuell
+  getan werden muss. Der Service Worker verwaltet ausschließlich die Cache
+  Storage API und fasst `localStorage` (den Lernfortschritt) nie an – beide
+  Speicherarten sind im Browser vollständig getrennt.
 - **Neu gestaltet:** Das Dashboard ist jetzt eine „Jarvis-Zentrale": ein großer,
   detailreicher Jarvis-Kern (SVG, mehrere gegenläufig rotierende Ringe,
   Skalenstriche, segmentierte Bögen, sanftes Pulsieren) in der Mitte. Tippt man
@@ -83,6 +100,21 @@ aktiviert werden; stattdessen wurde die identische CSS-Regel isoliert
 nachgebildet und geprüft, dass sie wie vorgesehen wirkt – das ist ein starkes,
 aber kein vollständiges Äquivalent zum echten Einstellungstest.
 
+Die tatsächliche **Service-Worker-Registrierung** ließ sich in den für diesen
+Schritt verfügbaren Browser-Werkzeugen nicht live ausführen (die dort
+verwendete Vorschau-Umgebung blockiert jede Service-Worker-Registrierung
+grundsätzlich – bestätigt durch einen Kontrolltest mit einer leeren,
+nachweislich fehlerfreien Testdatei, die denselben Fehler zeigte). Geprüft
+wurde stattdessen dieselbe Cache-Logik direkt über die Cache-Storage-API:
+Alle 9 Dateien der App laden mit Status 200 und lassen sich erfolgreich
+zwischenspeichern (`caches.open` + `cache.addAll`, identisch zur
+„install"-Behandlung in `sw.js`), und die Lösch-Logik für alte
+Cache-Versionen wurde mit einem simulierten Versionswechsel (v1 → v2)
+erfolgreich nachvollzogen, ohne dass dabei gespeicherte Werte in
+`localStorage` verändert wurden. Die eigentliche Service-Worker-Aktivierung,
+der Offline-Modus und das automatische Update müssen daher noch in einem
+echten Browser (z. B. auf dem Tablet, siehe Testanleitung) bestätigt werden.
+
 ## Abgeschlossene Schritte
 
 1. Projekt-Grundgerüst mit futuristischem Dashboard-Design.
@@ -97,14 +129,15 @@ aber kein vollständiges Äquivalent zum echten Einstellungstest.
 6. Neues Jarvis-Hauptmenü: Dashboard als Jarvis-Zentrale mit Leitungen,
    HUD-Statusanzeigen (Level, XP-Fortschrittsbalken, Sterne) und
    Sterne-Datenfeld (Startwert 0, Migration bestehender Stände).
+7. Installierbare App: Web-App-Manifest, drei eigene App-Symbole und ein
+   Service Worker für Offline-Betrieb mit Versionierung.
 
 ## Derzeitiger Entwicklungsschritt
 
-Neues Jarvis-Hauptmenü abgeschlossen. Fächer-Ansicht, Deutsch-Themen,
-Deutsch-Demo inkl. Aufgaben, XP-Anzeigen in der Übung und alle Zurück-Buttons
-wurden dabei nicht verändert. Die XP-Regeln, Level-Berechnung und
-Speicherlogik in `src/fortschritt.js` wurden nur lesend verwendet, einzige
-Ausnahme war die Ergänzung des Feldes `sterne`.
+Installierbare App abgeschlossen (Manifest, Symbole, Offline-Betrieb).
+Hauptmenü, Deutsch-Demo, XP-Regeln, Speicherlogik und Design wurden dabei
+nicht verändert; der Speicherschlüssel `lernJarvis.v1` und sein Inhalt blieben
+unangetastet.
 
 ## Offene Aufgaben (geprüft: im Code nicht vorhanden)
 
@@ -130,7 +163,10 @@ Ausnahme war die Ergänzung des Feldes `sterne`.
 - Echte KI-Anbindung (bewusst noch nicht geplant/umgesetzt).
 - **Datensicherung (Export/Import) fehlt noch – Löschen der Browserdaten löscht
   den Fortschritt.**
-- **Wie die App auf das Tablet des Kindes kommt, ist noch nicht geklärt.**
+- Die App ist jetzt technisch installierbar (Manifest, Symbole, Offline-Cache);
+  **wo sie dauerhaft gehostet wird, damit das Tablet sie überhaupt zum ersten
+  Mal laden kann, ist weiterhin nicht geklärt** (lokales Netz, GitHub Pages
+  oder etwas anderes).
 
 ## Bekannte Fehler und Einschränkungen
 
@@ -153,7 +189,9 @@ Ausnahme war die Ergänzung des Feldes `sterne`.
   Python 3.9.6 ist vorhanden und wurde bisher nur zum lokalen Testen per
   `python3 -m http.server` verwendet, ist aber kein Teil der App selbst.
 - **Ungeprüft:** Verhalten auf einem echten Android-Tablet, echte
-  Touch-Bedienung, echte Betriebssystem-Einstellung „Bewegung reduzieren".
+  Touch-Bedienung, echte Betriebssystem-Einstellung „Bewegung reduzieren",
+  echte Service-Worker-Aktivierung/Offline-Modus/Update in einem echten
+  Browser (siehe Hinweis oben).
 
 ## Wichtige technische Entscheidungen
 
@@ -190,6 +228,16 @@ Ausnahme war die Ergänzung des Feldes `sterne`.
   einer früheren Planungsrunde).
 - Keine echten Namen im Code. Ein persönlicher Name kann später ausschließlich
   lokal auf dem Gerät gespeichert werden.
+- **Bei jeder Änderung an App-Dateien die Cache-Version in `sw.js` erhöhen**
+  (z. B. `lernjarvis-v1` → `lernjarvis-v2`), sonst erhalten installierte
+  Geräte die Änderung nicht zuverlässig.
+- App-Symbole als reine, selbst erzeugte PNG-Dateien (eigener Jarvis-Kern,
+  keine fremden Bilder/Logos), damit keine Installation zusätzlicher
+  Bildbearbeitungswerkzeuge nötig ist.
+- Service Worker mit „Cache-Storage-first, Netzwerk-Fallback"-Strategie:
+  bereits zwischengespeicherte Dateien werden sofort ausgeliefert (Offline-
+  und Geschwindigkeitsvorteil), gleichzeitig wird im Hintergrund versucht,
+  neuere Versionen nachzuladen und den Cache zu aktualisieren.
 
 ## Nächster empfohlener Schritt
 
