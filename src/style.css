@@ -774,3 +774,204 @@ body {
   text-align: center;
   margin: 0;
 }
+
+/* ---------- Themenkacheln (Katalog) ---------- */
+
+.thema-kachel-bald {
+  cursor: default;
+  border-style: dashed;
+  opacity: 0.9;
+}
+
+.thema-kachel-bald .area-sub {
+  color: var(--cyan);
+}
+
+.thema-kachel-bald:hover,
+.thema-kachel-bald:focus-visible {
+  box-shadow: none;
+  border-color: var(--border-glow);
+}
+
+/* ---------- Themen-Startseite (Erklären / Üben) ---------- */
+
+.thema-geuebt {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  margin: -0.5rem 0 0;
+  text-align: center;
+}
+
+.thema-aktionen {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+/* ---------- Erklärung (Schritt-für-Schritt) ---------- */
+
+.erklaerung-back-button {
+  align-self: flex-start;
+  background: transparent;
+  border: 1px solid var(--border-glow);
+  border-radius: 999px;
+  color: var(--cyan);
+  font-family: inherit;
+  font-size: 0.9rem;
+  padding: 0.6rem 1.2rem;
+  min-height: 44px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.erklaerung-back-button:hover,
+.erklaerung-back-button:focus-visible {
+  border-color: var(--cyan);
+  box-shadow: 0 0 14px var(--blue-glow);
+  outline: none;
+}
+
+.erklaerung-inhalt {
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.erklaerung-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.erklaerung-beispiel {
+  font-size: 0.95rem;
+  color: var(--cyan);
+  background: rgba(79, 243, 255, 0.08);
+  border: 1px solid var(--border-glow);
+  border-radius: 10px;
+  padding: 0.6rem 1rem;
+  text-align: center;
+  margin: 0;
+}
+
+.erklaerung-frage {
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  margin: 0.5rem 0 0;
+}
+
+.erklaerung-nav {
+  margin-top: 0.5rem;
+}
+
+/* ---------- Einmaleins: Reihen-Auswahl ---------- */
+
+.reihen-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.85rem;
+  width: 100%;
+  max-width: 480px;
+}
+
+.reihe-button {
+  background: linear-gradient(160deg, var(--bg-panel-light), var(--bg-panel));
+  border: 1px solid var(--border-glow);
+  border-radius: 14px;
+  min-height: 64px;
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.reihe-button:hover,
+.reihe-button:focus-visible {
+  border-color: var(--cyan);
+  box-shadow: 0 0 16px var(--blue-glow);
+  outline: none;
+}
+
+.reihe-button:active {
+  transform: scale(0.96);
+}
+
+.reihe-button-gemischt {
+  grid-column: span 2;
+  color: var(--cyan);
+}
+
+/* ---------- Einmaleins: Zahlenfeld ---------- */
+
+.pad-display {
+  width: 100%;
+  max-width: 240px;
+  min-height: 68px;
+  background: rgba(11, 20, 31, 0.78);
+  border: 1px solid var(--border-glow);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--cyan);
+  text-shadow: 0 0 10px var(--blue-glow);
+}
+
+.pad-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 320px;
+}
+
+.pad-key {
+  background: linear-gradient(160deg, var(--bg-panel-light), var(--bg-panel));
+  border: 1px solid var(--border-glow);
+  border-radius: 14px;
+  min-height: 64px;
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 1.3rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.pad-key:hover:not(:disabled),
+.pad-key:focus-visible:not(:disabled) {
+  border-color: var(--cyan);
+  box-shadow: 0 0 16px var(--blue-glow);
+  outline: none;
+}
+
+.pad-key:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.pad-key:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.pad-key-aktion {
+  font-size: 0.95rem;
+}
+
+.pad-key-fertig {
+  background: linear-gradient(135deg, var(--blue), var(--cyan));
+  color: var(--bg-deep);
+  border: none;
+}

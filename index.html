@@ -126,13 +126,13 @@
       </section>
 
       <section class="view subview" id="view-faecher" hidden>
-        <button class="back-button" type="button" data-back="view-dashboard">&larr; Zur&uuml;ck</button>
+        <button class="back-button" type="button">&larr; Zur&uuml;ck</button>
         <h2 class="view-title">F&auml;cher</h2>
         <nav class="area-grid">
-          <button class="area-card" data-area="mathe">
+          <button class="area-card" data-nav="view-mathe-themen">
             <span class="area-icon">&#8721;</span>
             <span class="area-label">Mathematik</span>
-            <span class="area-sub">folgt sp&auml;ter</span>
+            <span class="area-sub">Themen ansehen</span>
           </button>
           <button class="area-card" data-nav="view-deutsch-themen">
             <span class="area-icon">&#9999;</span>
@@ -142,44 +142,56 @@
         </nav>
       </section>
 
-      <section class="view subview" id="view-deutsch-themen" hidden>
-        <button class="back-button" type="button" data-back="view-faecher">&larr; Zur&uuml;ck</button>
-        <h2 class="view-title">Deutsch &ndash; Themen</h2>
-        <nav class="area-grid">
-          <button class="area-card" data-area="rechtschreibung">
-            <span class="area-label">Rechtschreibung</span>
-            <span class="area-sub">folgt sp&auml;ter</span>
-          </button>
-          <button class="area-card" data-nav="view-deutsch-grossklein">
-            <span class="area-label">Gro&szlig;- &amp; Kleinschreibung</span>
-            <span class="area-sub">Demo verf&uuml;gbar</span>
-          </button>
-          <button class="area-card" data-area="wortarten">
-            <span class="area-label">Wortarten</span>
-            <span class="area-sub">folgt sp&auml;ter</span>
-          </button>
-          <button class="area-card" data-area="satzbau">
-            <span class="area-label">Satzbau &amp; Satzzeichen</span>
-            <span class="area-sub">folgt sp&auml;ter</span>
-          </button>
-          <button class="area-card" data-area="lesen">
-            <span class="area-label">Leseverst&auml;ndnis</span>
-            <span class="area-sub">folgt sp&auml;ter</span>
-          </button>
-          <button class="area-card" data-area="schreiben">
-            <span class="area-label">Texte schreiben</span>
-            <span class="area-sub">folgt sp&auml;ter</span>
-          </button>
-        </nav>
+      <section class="view subview" id="view-mathe-themen" hidden>
+        <button class="back-button" type="button">&larr; Zur&uuml;ck</button>
+        <h2 class="view-title">Mathematik &ndash; Themen</h2>
+        <nav class="area-grid" id="mathe-themen-liste"></nav>
       </section>
 
-      <section class="view subview exercise-view" id="view-deutsch-grossklein" hidden>
-        <button class="back-button" type="button" data-back="view-deutsch-themen">&larr; Zur&uuml;ck</button>
+      <section class="view subview" id="view-deutsch-themen" hidden>
+        <button class="back-button" type="button">&larr; Zur&uuml;ck</button>
+        <h2 class="view-title">Deutsch &ndash; Themen</h2>
+        <nav class="area-grid" id="deutsch-themen-liste"></nav>
+      </section>
+
+      <section class="view subview" id="view-thema" hidden>
+        <button class="back-button" type="button">&larr; Zur&uuml;ck</button>
+        <h2 class="view-title" id="thema-titel"></h2>
+        <p class="thema-geuebt" id="thema-geuebt"></p>
+        <div class="thema-aktionen">
+          <button class="next-button" type="button" id="thema-erklaeren-button">Erkl&auml;ren</button>
+          <button class="next-button" type="button" id="thema-ueben-button">&Uuml;ben</button>
+        </div>
+      </section>
+
+      <section class="view subview" id="view-erklaerung" hidden>
+        <button class="erklaerung-back-button" type="button" id="erklaerung-zurueck-button">&larr; Zur&uuml;ck</button>
+        <span class="exercise-progress" id="erklaerung-fortschritt"></span>
+        <div class="erklaerung-inhalt" id="erklaerung-inhalt"></div>
+      </section>
+
+      <section class="view subview exercise-view" id="view-uebung" hidden>
+        <button class="back-button" type="button">&larr; Zur&uuml;ck</button>
         <div class="exercise-header">
-          <h2 class="view-title">Gro&szlig;- &amp; Kleinschreibung</h2>
+          <h2 class="view-title" id="uebung-titel"></h2>
           <span class="demo-badge">DEMO &ndash; ohne KI</span>
         </div>
-        <div class="exercise-content" id="exercise-content"></div>
+        <div class="exercise-content" id="uebung-exercise-content"></div>
+      </section>
+
+      <section class="view subview" id="view-einmaleins-auswahl" hidden>
+        <button class="back-button" type="button">&larr; Zur&uuml;ck</button>
+        <h2 class="view-title">Einmaleins &ndash; welche Reihe?</h2>
+        <div class="reihen-grid" id="reihen-grid"></div>
+      </section>
+
+      <section class="view subview exercise-view" id="view-einmaleins-uebung" hidden>
+        <button class="back-button" type="button">&larr; Zur&uuml;ck</button>
+        <div class="exercise-header">
+          <h2 class="view-title">Einmaleins</h2>
+          <span class="demo-badge">DEMO &ndash; ohne KI</span>
+        </div>
+        <div class="exercise-content" id="einmaleins-exercise-content"></div>
       </section>
     </main>
 
@@ -187,6 +199,10 @@
   </div>
 
   <script src="src/fortschritt.js"></script>
+  <script src="src/einmaleins-generator.js"></script>
+  <script src="inhalte/katalog.js"></script>
+  <script src="inhalte/deutsch-grossklein.js"></script>
+  <script src="inhalte/mathe-einmaleins.js"></script>
   <script src="src/script.js"></script>
   <script>
     if ("serviceWorker" in navigator) {

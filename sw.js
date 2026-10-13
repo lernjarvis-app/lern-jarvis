@@ -7,7 +7,7 @@
  * (z. B. "lernjarvis-v2"), damit Nutzer:innen zuverlässig die neue Version
  * erhalten, sobald sie die App das nächste Mal öffnen.
  */
-const CACHE_VERSION = "lernjarvis-v1";
+const CACHE_VERSION = "lernjarvis-v2";
 
 const APP_SHELL = [
   "./",
@@ -15,6 +15,10 @@ const APP_SHELL = [
   "src/style.css",
   "src/script.js",
   "src/fortschritt.js",
+  "src/einmaleins-generator.js",
+  "inhalte/katalog.js",
+  "inhalte/deutsch-grossklein.js",
+  "inhalte/mathe-einmaleins.js",
   "manifest.webmanifest",
   "icons/icon-192.png",
   "icons/icon-512.png",
