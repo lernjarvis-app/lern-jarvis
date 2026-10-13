@@ -720,15 +720,12 @@ function padFertig() {
 
   if (einmaleinsFalscheVersuche >= 3) {
     einmaleinsGeloest = true;
-    const xp = berechneAufgabenXP(false);
-    missionXP.push(xp);
-    fortschritt.gesamtXP = addiereXP(fortschritt.gesamtXP, xp);
-    speichereFortschritt(fortschritt);
-    aktualisiereKopfzeile();
+    // Keine XP, wenn die Lösung nach 3 Fehlversuchen gezeigt wird.
+    missionXP.push(0);
 
     feedback.textContent = `Kein Problem – die Lösung ist ${aufgabe.ergebnis}. ${aufgabe.faktor1} · ${aufgabe.faktor2} bedeutet ${aufgabe.faktor1} Gruppen mit je ${aufgabe.faktor2}, zusammen ${aufgabe.ergebnis}.`;
     feedback.className = "exercise-feedback feedback-incorrect";
-    xpFeedback.textContent = `+${xp} XP – ernsthafter Versuch`;
+    xpFeedback.textContent = "+0 XP – kein Problem, auf zur nächsten Aufgabe!";
     padTastenSperren();
     nextBtn.hidden = false;
   } else {

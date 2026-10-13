@@ -104,10 +104,11 @@ sowie **neu:** `src/einmaleins-generator.js` und der Ordner `inhalte/` mit
   Ansicht. Das bestehende Hauptmenü (Jarvis-Kern, Leitungen,
   Statusanzeigen, die 5 Menüpunkte) ist davon unberührt.
 - Echte XP-Vergabe nach festen Regeln, für alle Themen gleich (10 XP bei
-  erstem Versuch richtig, 5 XP bei richtig nach Korrektur, 5 XP wenn nach
-  dem dritten Fehlversuch die Lösung gezeigt wird, einmalig +10 XP
-  Missionsbonus bei vollständigem Abschluss, Obergrenze 15 XP/Aufgabe im
-  Code abgesichert, XP sinken nie).
+  erstem Versuch richtig, 5 XP bei richtig nach Korrektur, **0 XP, wenn
+  nach dem dritten Fehlversuch die Lösung gezeigt wird** – nachträglich auf
+  Wunsch angepasst, ursprünglich waren hier 5 XP vorgesehen –, einmalig
+  +10 XP Missionsbonus bei vollständigem Abschluss, Obergrenze 15 XP/Aufgabe
+  im Code abgesichert, XP sinken nie).
   Reine Berechnungslogik in `src/fortschritt.js`, getrennt von der Oberfläche.
 - Level-Berechnung (Level = Gesamt-XP ganzzahlig durch 100, plus 1) mit festen
   Namen für Level 1–8, ab Level 9 nur „Level 9" usw.
@@ -145,6 +146,14 @@ sofort nach einer Mission, Groß- und Kleinschreibung weiterhin unverändert
 Speicherstand ohne `themaId`: XP blieb erhalten, keine Fehler, die alte
 Großschreibung-Mission zählt über den früheren Themennamen weiterhin als
 „geübt" mit.
+
+**Korrektur nach Rückmeldung:** Die ursprünglich vorgesehenen 5 XP für eine
+nach drei Fehlversuchen gezeigte Lösung wurden auf Wunsch wieder entfernt
+(jetzt 0 XP) – 5 XP für drei falsche Antworten wurden als nicht angemessen
+empfunden. Im Browser erneut getestet: nach drei Fehlversuchen „+0 XP",
+Gesamt-XP unverändert; der Fall „einmal falsch, dann richtig" (weiterhin
+5 XP) sowie der Missionsabschluss inkl. Bonus bei einer Mission mit einer
+0-XP-Aufgabe wurden ebenfalls erneut bestätigt.
 
 **Ungeprüft:** Verhalten der neuen Themenkatalog-Oberfläche und der
 Einmaleins-Übung auf einem echten Android-Tablet mit echter Touch-Bedienung

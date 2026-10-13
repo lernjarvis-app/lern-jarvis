@@ -7,7 +7,7 @@
  * (z. B. "lernjarvis-v2"), damit Nutzer:innen zuverlässig die neue Version
  * erhalten, sobald sie die App das nächste Mal öffnen.
  */
-const CACHE_VERSION = "lernjarvis-v2";
+const CACHE_VERSION = "lernjarvis-v3";
 
 const APP_SHELL = [
   "./",
